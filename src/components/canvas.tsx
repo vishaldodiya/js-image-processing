@@ -14,10 +14,14 @@ export class Canvas extends React.Component<Image, {}, any> {
         let btnInvert: any = this.refs.btnInvert;
         let btnGreyScale: any = this.refs.btnGrey;
         let btnReset: any = this.refs.btnReset;
+        let btnBrightness: any = this.refs.brightness;
+        let btnContrast: any = this.refs.contrast;
 
         btnInvert.addEventListener( 'click', this.invertColor.bind( this ) );
         btnGreyScale.addEventListener( 'click', this.convertGreyScale.bind( this ) );
         btnReset.addEventListener( 'click', this.resetImage.bind( this ) );
+        btnBrightness.addEventListener( 'change', this.changeBrightness.bind( this ) );
+        btnContrast.addEventListener( 'change', this.changeContrast.bind( this ) );
     }
 
     updateCanvas() {
@@ -81,6 +85,32 @@ export class Canvas extends React.Component<Image, {}, any> {
         this.context.putImageData( this.imageData, 0, 0 );
     }
 
+    changeBrightness( event: any ) {
+        var imageData = this.context.getImageData( 0, 0, 300, 300 );
+        let data = imageData.data;
+
+        for( var i = 0; i < data.length; i += 4 ) {
+            data[i] = this.imageData.data[i] + event.target.value;
+            data[i+1] = this.imageData.data[i+1] + event.target.value;
+            data[i+2] = this.imageData.data[i+2] + event.target.value;
+        }
+
+        this.context.putImageData( imageData, 0, 0 );
+    }
+
+    changeContrast( event: any ) {
+        var imageData = this.context.getImageData( 0, 0, 300, 300 );
+        let data = imageData.data;
+
+        for( var i = 0; i < data.length; i += 4 ) {
+            data[i] = this.imageData.data[i] - event.target.value;
+            data[i+1] = this.imageData.data[i+1] - event.target.value;
+            data[i+2] = this.imageData.data[i+2] - event.target.value;
+        }
+
+        this.context.putImageData( imageData, 0, 0 );
+    }
+
     render() {
         return ( 
             <div className="container">
@@ -90,6 +120,8 @@ export class Canvas extends React.Component<Image, {}, any> {
                     <button ref="btnInvert">Invert Color</button>
                     <button ref="btnGrey">Convert GreyScale</button>
                     <button ref="btnReset">Reset</button>
+                    <input type="number" ref="brightness" max="100" min="-100" />
+                    <input type="number" ref="contrast" max="100" min="-100" />
                 </div>
             </div>
         )
