@@ -83,12 +83,14 @@ export class Canvas extends React.Component<Image, {}, any> {
 
     render() {
         return ( 
-            <div>
+            <div className="container">
                 <canvas ref="canvas"></canvas>
                 <div ref="colorPicker" className="color-picker"></div>
-                <button ref="btnInvert">Invert Color</button>
-                <button ref="btnGrey">Convert GreyScale</button>
-                <button ref="btnReset">Reset</button>
+                <div className="btnContainer">
+                    <button ref="btnInvert">Invert Color</button>
+                    <button ref="btnGrey">Convert GreyScale</button>
+                    <button ref="btnReset">Reset</button>
+                </div>
             </div>
         )
     }
